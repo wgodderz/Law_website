@@ -47,13 +47,13 @@ document.addEventListener("DOMContentLoaded", function () {
       resize();
       window.addEventListener("resize", resize);
 
-      var N = Math.min(50, Math.round((box.clientWidth * box.clientHeight) / 18000));
+      var N = Math.min(85, Math.round((box.clientWidth * box.clientHeight) / 11000));
       var pts = Array.from({ length: N }, function () {
         return {
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * 0.3,
-          vy: (Math.random() - 0.5) * 0.3,
+          vx: (Math.random() - 0.5) * 0.4,
+          vy: (Math.random() - 0.5) * 0.4,
         };
       });
 
@@ -69,9 +69,9 @@ document.addEventListener("DOMContentLoaded", function () {
           for (var j = i + 1; j < pts.length; j++) {
             var dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
             var dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < 130) {
-              ctx.strokeStyle = "rgba(201,162,39," + (1 - dist / 130) * 0.6 + ")";
-              ctx.lineWidth = 0.6;
+            if (dist < 150) {
+              ctx.strokeStyle = "rgba(231,200,115," + (1 - dist / 150) * 0.85 + ")";
+              ctx.lineWidth = 0.8;
               ctx.beginPath();
               ctx.moveTo(pts[i].x, pts[i].y);
               ctx.lineTo(pts[j].x, pts[j].y);
@@ -80,9 +80,9 @@ document.addEventListener("DOMContentLoaded", function () {
           }
         }
         pts.forEach(function (p) {
-          ctx.fillStyle = "rgba(231,200,115,0.85)";
+          ctx.fillStyle = "rgba(255,222,150,0.95)";
           ctx.beginPath();
-          ctx.arc(p.x, p.y, 1.8, 0, Math.PI * 2);
+          ctx.arc(p.x, p.y, 2.4, 0, Math.PI * 2);
           ctx.fill();
         });
         rafId = requestAnimationFrame(tick);
