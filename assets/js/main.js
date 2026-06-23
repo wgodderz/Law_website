@@ -32,6 +32,77 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
+  // Ambient particle network behind hero sections
+  document.querySelectorAll(".hero-fx-canvas").forEach(function (canvas) {
+    try {
+      var ctx = canvas.getContext("2d");
+      var box = canvas.parentElement;
+      var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (!ctx || reduceMotion) return;
+
+      function resize() {
+        canvas.width = box.clientWidth;
+        canvas.height = box.clientHeight;
+      }
+      resize();
+      window.addEventListener("resize", resize);
+
+      var N = Math.min(50, Math.round((box.clientWidth * box.clientHeight) / 18000));
+      var pts = Array.from({ length: N }, function () {
+        return {
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vx: (Math.random() - 0.5) * 0.3,
+          vy: (Math.random() - 0.5) * 0.3,
+        };
+      });
+
+      var rafId;
+      function tick() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        pts.forEach(function (p) {
+          p.x += p.vx; p.y += p.vy;
+          if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+          if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+        });
+        for (var i = 0; i < pts.length; i++) {
+          for (var j = i + 1; j < pts.length; j++) {
+            var dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
+            var dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 130) {
+              ctx.strokeStyle = "rgba(201,162,39," + (1 - dist / 130) * 0.6 + ")";
+              ctx.lineWidth = 0.6;
+              ctx.beginPath();
+              ctx.moveTo(pts[i].x, pts[i].y);
+              ctx.lineTo(pts[j].x, pts[j].y);
+              ctx.stroke();
+            }
+          }
+        }
+        pts.forEach(function (p) {
+          ctx.fillStyle = "rgba(231,200,115,0.85)";
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, 1.8, 0, Math.PI * 2);
+          ctx.fill();
+        });
+        rafId = requestAnimationFrame(tick);
+      }
+      tick();
+
+      // pause when off-screen to save battery/CPU
+      if ("IntersectionObserver" in window) {
+        new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) { if (!rafId) tick(); }
+            else { cancelAnimationFrame(rafId); rafId = null; }
+          });
+        }).observe(canvas);
+      }
+    } catch (e) {
+      // Canvas effect failed — hero still renders fine without it.
+    }
+  });
+
   // Footer year
   var yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
