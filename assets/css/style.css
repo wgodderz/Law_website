@@ -280,6 +280,16 @@ section { padding: 78px 0; }
   inset: 0;
   z-index: 0;
 }
+/* Any direct content container in a hero must out-rank the background
+   photo layer. Without an explicit position+z-index here, a plain static
+   container paints BEHIND an absolutely-positioned z-index:0 sibling per
+   the CSS2.1 stacking spec, regardless of DOM order — which is exactly
+   what made hero text unreadable on every page except the homepage
+   (whose .hero-grid container happened to already set z-index:1). */
+.hero > .container {
+  position: relative;
+  z-index: 1;
+}
 .hero-bg-photo img {
   width: 100%;
   height: 100%;
