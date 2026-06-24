@@ -30,7 +30,7 @@ body {
   font-family: var(--sans);
   color: var(--ink);
   background: var(--white);
-  line-height: 1.65;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -52,7 +52,7 @@ h1 { font-size: clamp(2.1rem, 4vw, 3.2rem); }
 h2 { font-size: clamp(1.6rem, 3vw, 2.3rem); }
 h3 { font-size: 1.3rem; }
 
-p { margin: 0 0 1.1em; color: var(--ink); }
+p { margin: 0 0 1.25em; color: var(--ink); }
 
 ul { margin: 0 0 1.1em; padding-left: 1.3em; }
 li { margin-bottom: 0.5em; }
@@ -699,11 +699,83 @@ section { padding: 78px 0; }
 .breadcrumb span { color: #b9c3d1; margin: 0 6px; }
 
 .article-body {
-  max-width: 760px;
+  max-width: 720px;
   margin: 0 auto;
+  font-size: 1.08rem;
 }
-.article-body h2 { margin-top: 1.4em; }
-.article-body ul { margin-bottom: 1.3em; }
+.article-body p {
+  line-height: 1.85;
+  margin-bottom: 1.4em;
+  color: var(--ink);
+}
+.article-body h2 {
+  margin-top: 2.1em;
+  margin-bottom: 0.7em;
+  padding-top: 0.4em;
+  border-top: 1px solid var(--border);
+}
+.article-body h2:first-child,
+.article-body > p:first-of-type + h2 {
+  border-top: none;
+}
+.article-body h3 {
+  margin-top: 1.6em;
+  margin-bottom: 0.5em;
+}
+.article-body ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 1.2em 0 1.6em;
+}
+.article-body li {
+  position: relative;
+  padding-left: 26px;
+  line-height: 1.75;
+  margin-bottom: 0.7em;
+}
+.article-body li::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 0.62em;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+/* Key-takeaways summary box at the top of long-form articles */
+.takeaways {
+  background: var(--cream-dark);
+  border-left: 4px solid var(--gold);
+  border-radius: var(--radius);
+  padding: 26px 30px;
+  margin: 0 0 2.2em;
+}
+.takeaways h2 {
+  margin: 0 0 0.7em;
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-top: none;
+  padding-top: 0;
+}
+.takeaways ul { margin: 0; }
+.takeaways li { color: var(--ink); }
+
+/* Pull quote used mid-article to break up long sections */
+.pull-quote {
+  border-left: 4px solid var(--gold);
+  background: var(--cream-dark);
+  border-radius: var(--radius);
+  padding: 26px 30px;
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  line-height: 1.5;
+  color: var(--navy);
+  font-style: italic;
+  margin: 2.2em 0;
+}
 
 .related-grid {
   display: grid;
@@ -763,8 +835,9 @@ section { padding: 78px 0; }
 .faq-item.open .faq-answer {
   padding-bottom: 20px;
 }
-.faq-answer p, .faq-answer ul { color: var(--gray); }
+.faq-answer p, .faq-answer ul { color: var(--gray); line-height: 1.75; }
 .faq-answer p:last-child, .faq-answer ul:last-child { margin-bottom: 0; }
+.faq-answer li { margin-bottom: 0.5em; }
 
 .placeholder-box {
   border: 2px dashed var(--gold);
