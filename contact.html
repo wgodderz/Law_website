@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us | Paradigm Law Group</title>
+<meta name="description" content="Get in touch with Paradigm Law Group &mdash; estate planning counsel serving Kansas and Missouri.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="contact" data-depth="">
+
+<div class="site-header" data-include="header"></div>
+
+<header class="hero" style="padding: 90px 0 60px;">
+  <div class="hero-gradient"></div>
+  <div class="wrap hero-content on-navy" style="text-align:center; max-width:680px; margin:0 auto;">
+    <span class="eyebrow" style="justify-content:center;">Contact</span>
+    <h1 style="font-size: clamp(2.2rem, 4.5vw, 3.2rem); margin-top: 18px;">Let&rsquo;s Talk</h1>
+    <p class="muted" style="font-size: 1.1rem;">Reach out by phone, email, or schedule a consultation directly.</p>
+  </div>
+</header>
+
+<section class="section">
+  <div class="wrap grid-2" style="align-items:flex-start;">
+    <div class="reveal">
+      <span class="eyebrow">Get in Touch</span>
+      <h2 style="font-size: 1.8rem; margin-top: 18px;">Paradigm Law Group</h2>
+      <div style="display:grid; gap: 22px; margin-top: 28px;">
+        <div style="display:flex; gap:16px; align-items:flex-start;">
+          <div class="card-icon" style="margin-bottom:0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div>
+            <div class="muted" style="font-size:0.82rem; text-transform:uppercase; letter-spacing:0.08em;">Phone</div>
+            <a href="tel:+18168093732" data-no-loader style="font-size:1.1rem; font-weight:600;">816-809-3732</a>
+          </div>
+        </div>
+        <div style="display:flex; gap:16px; align-items:flex-start;">
+          <div class="card-icon" style="margin-bottom:0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z" opacity="0"/><path d="M22 6l-10 7L2 6"/><path d="M2 6h20v12H2z"/></svg></div>
+          <div>
+            <div class="muted" style="font-size:0.82rem; text-transform:uppercase; letter-spacing:0.08em;">Email</div>
+            <div style="font-size:1.1rem; font-weight:600;">[email placeholder]@paradigmlaw.com</div>
+          </div>
+        </div>
+        <div style="display:flex; gap:16px; align-items:flex-start;">
+          <div class="card-icon" style="margin-bottom:0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-5-7-11a7 7 0 0 1 14 0c0 6-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></div>
+          <div>
+            <div class="muted" style="font-size:0.82rem; text-transform:uppercase; letter-spacing:0.08em;">Office</div>
+            <div style="font-size:1.1rem; font-weight:600;">[Office Address Placeholder]<br><span class="muted" style="font-weight:400; font-size:0.95rem;">Kansas City Metro</span></div>
+          </div>
+        </div>
+        <div style="display:flex; gap:16px; align-items:flex-start;">
+          <div class="card-icon" style="margin-bottom:0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg></div>
+          <div>
+            <div class="muted" style="font-size:0.82rem; text-transform:uppercase; letter-spacing:0.08em;">Licensed In</div>
+            <div style="font-size:1.1rem; font-weight:600;">Kansas &amp; Missouri</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <form class="card reveal" style="display:grid; gap:18px;" onsubmit="event.preventDefault(); this.querySelector('.form-success').style.display='block'; this.querySelectorAll('input,textarea,button').forEach(el=>el.disabled=true);">
+      <h3 style="font-size:1.2rem;">Send a Message</h3>
+      <div>
+        <label for="name" style="display:block; font-size:0.85rem; margin-bottom:6px; color:var(--ink-muted);">Full Name</label>
+        <input id="name" name="name" type="text" required style="width:100%; padding:12px 14px; border:1px solid var(--line); border-radius:4px; font-family:inherit; font-size:0.95rem;">
+      </div>
+      <div>
+        <label for="email" style="display:block; font-size:0.85rem; margin-bottom:6px; color:var(--ink-muted);">Email</label>
+        <input id="email" name="email" type="email" required style="width:100%; padding:12px 14px; border:1px solid var(--line); border-radius:4px; font-family:inherit; font-size:0.95rem;">
+      </div>
+      <div>
+        <label for="phone" style="display:block; font-size:0.85rem; margin-bottom:6px; color:var(--ink-muted);">Phone</label>
+        <input id="phone" name="phone" type="tel" style="width:100%; padding:12px 14px; border:1px solid var(--line); border-radius:4px; font-family:inherit; font-size:0.95rem;">
+      </div>
+      <div>
+        <label for="message" style="display:block; font-size:0.85rem; margin-bottom:6px; color:var(--ink-muted);">How can we help?</label>
+        <textarea id="message" name="message" rows="4" required style="width:100%; padding:12px 14px; border:1px solid var(--line); border-radius:4px; font-family:inherit; font-size:0.95rem; resize:vertical;"></textarea>
+      </div>
+      <button type="submit" class="btn btn-bronze" style="justify-self:start;">Send Message</button>
+      <p class="form-success" style="display:none; color: var(--bronze); font-size:0.92rem;">Thank you &mdash; we&rsquo;ll be in touch soon.</p>
+      <p class="muted" style="font-size:0.78rem;">This form is for general inquiries only. Submitting this form does not create an attorney-client relationship.</p>
+    </form>
+  </div>
+</section>
+
+<div class="site-footer" data-include="footer"></div>
+
+<div id="page-loader" data-loader-text="Just a moment">
+  <div class="loader-wrapper">
+    <div class="loader-letters" id="loader-letters"></div>
+    <div class="loader-ring"></div>
+  </div>
+</div>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
