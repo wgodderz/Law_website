@@ -350,13 +350,13 @@ p:last-child { margin-bottom: 0; }
   position: absolute;
   top: 0;
   left: 0;
-  width: 760px;
-  height: 760px;
+  width: 260px;
+  height: 260px;
   border-radius: 50%;
   background: radial-gradient(circle,
-    rgba(255, 255, 255, 0.1) 0%,
-    rgba(255, 250, 235, 0.05) 32%,
-    rgba(201, 154, 75, 0.03) 55%,
+    rgba(255, 255, 255, 0.14) 0%,
+    rgba(255, 250, 235, 0.07) 32%,
+    rgba(201, 154, 75, 0.04) 55%,
     rgba(255, 255, 255, 0) 72%);
   mix-blend-mode: screen;
   pointer-events: none;
@@ -377,6 +377,28 @@ p:last-child { margin-bottom: 0; }
 .section { padding: 96px 0; }
 .section-tight { padding: 64px 0; }
 section.on-navy { background: var(--navy); }
+
+/* Reusable photo backdrop for non-hero sections — same treatment as
+   the hero: desaturated/darkened photo + navy color-blend tint, so a
+   real city photo reads as brand-toned atmosphere, not a loud stock photo. */
+.section-with-photo { position: relative; overflow: hidden; isolation: isolate; }
+.section-photo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(0.35) brightness(0.4) contrast(1.12) saturate(0.95);
+}
+.section-photo-tint {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--navy);
+  mix-blend-mode: color;
+  opacity: 0.8;
+}
+.section-with-photo > .wrap { position: relative; z-index: 1; }
 
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
 .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
@@ -441,6 +463,117 @@ section.on-navy { background: var(--navy); }
   z-index: 1;
 }
 .callout .quote .em { color: var(--bronze-light); font-style: normal; }
+
+/* ---------- Legacy section: copy + diagonal photo belt ----------
+   Cream background (breaks up the navy-hero / navy-pedigree rhythm).
+   A diagonal, infinitely-scrolling strip of real family photography
+   runs behind/beside the copy — duotone-toned to the brand palette —
+   fading out at both ends and faded under the text column so it reads
+   as atmosphere, not clutter. */
+.legacy-section { position: relative; overflow: hidden; background: var(--paper); }
+.legacy-grid {
+  display: grid;
+  grid-template-columns: 1fr 0.9fr;
+  gap: 64px;
+  align-items: center;
+  min-height: 460px;
+}
+.legacy-copy { position: relative; z-index: 2; }
+.legacy-copy ul {
+  list-style: none;
+  padding: 0;
+  margin: 30px 0 0;
+  display: grid;
+  gap: 17px;
+}
+.legacy-copy li {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  font-size: 1.02rem;
+}
+.legacy-copy li .tick {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid var(--bronze);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.legacy-belt-zone {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.legacy-belt {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 220%;
+  height: 480px;
+  transform: translate(-50%, -50%) rotate(-27deg);
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 22%, black 78%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 22%, black 78%, transparent 100%);
+}
+.legacy-belt-track {
+  display: flex;
+  gap: 22px;
+  width: max-content;
+  height: 100%;
+  animation: legacy-belt-scroll 48s linear infinite;
+}
+.legacy-belt-track img {
+  width: 230px;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+  filter: grayscale(0.55) sepia(0.18) saturate(0.7) brightness(0.92) contrast(1.05);
+  opacity: 0.85;
+  box-shadow: var(--shadow-md);
+}
+@keyframes legacy-belt-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.legacy-belt-fade {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(to right, var(--paper) 0%, var(--paper) 34%, rgba(248, 245, 236, 0.55) 50%, rgba(248, 245, 236, 0) 68%);
+}
+
+.legacy-quote {
+  position: relative;
+  z-index: 2;
+  margin-top: 76px;
+  padding-top: 48px;
+  border-top: 1px solid var(--line);
+  text-align: center;
+}
+.legacy-quote p {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+  color: var(--ink-text);
+  max-width: 760px;
+  margin: 0 auto;
+  line-height: 1.45;
+}
+.legacy-quote .em { color: var(--bronze); font-style: normal; }
+
+@media (max-width: 860px) {
+  .legacy-grid { grid-template-columns: 1fr; gap: 48px; min-height: auto; }
+  .legacy-belt-zone { position: relative; height: 220px; margin-top: 32px; }
+  .legacy-belt { height: 200px; width: 220%; }
+  .legacy-belt-fade { background: linear-gradient(to bottom, var(--paper) 0%, rgba(248, 245, 236, 0) 30%, rgba(248, 245, 236, 0) 70%, var(--paper) 100%); }
+}
 
 /* ---------- Process steps ---------- */
 .steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px; }

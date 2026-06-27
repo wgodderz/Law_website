@@ -82,7 +82,7 @@ function initCursorGlow() {
     let curY = 0;
     let tracking = false;
     let looping = false;
-    const ease = 0.045;
+    const ease = 0.11;
 
     function loop() {
       curX += (targetX - curX) * ease;
@@ -116,36 +116,39 @@ function initCursorGlow() {
   });
 }
 
-/* ---------- Magnetic headline letters ----------
-   Letters nearest the cursor lift and grow slightly, like type
-   reacting to a light passing over it. */
+/* ---------- Headline letters warm slightly near the cursor ----------
+   Letters are grouped into per-word wrappers (white-space: nowrap) so
+   line breaks can only happen between words, never inside one. Letters
+   near the cursor gain a soft bronze glow — no movement or scaling. */
 function initMagneticHeadline() {
   if (PREFERS_REDUCED_MOTION) return;
   document.querySelectorAll(".hero h1").forEach((h1) => {
     const hero = h1.closest(".hero");
     if (!hero) return;
 
-    const originalText = h1.textContent;
+    const words = h1.textContent.split(" ");
     const letters = [];
     h1.innerHTML = "";
-    Array.from(originalText).forEach((ch) => {
-      if (ch === " ") {
-        h1.appendChild(document.createTextNode(" "));
-        return;
-      }
-      const span = document.createElement("span");
-      span.textContent = ch;
-      span.style.display = "inline-block";
-      span.style.transition = "transform 260ms cubic-bezier(0.22, 1, 0.36, 1)";
-      span.style.willChange = "transform";
-      h1.appendChild(span);
-      letters.push(span);
+    words.forEach((word, wi) => {
+      const wordSpan = document.createElement("span");
+      wordSpan.style.display = "inline-block";
+      wordSpan.style.whiteSpace = "nowrap";
+      Array.from(word).forEach((ch) => {
+        const span = document.createElement("span");
+        span.textContent = ch;
+        span.style.display = "inline-block";
+        span.style.transition = "color 320ms ease, text-shadow 320ms ease";
+        wordSpan.appendChild(span);
+        letters.push(span);
+      });
+      h1.appendChild(wordSpan);
+      if (wi < words.length - 1) h1.appendChild(document.createTextNode(" "));
     });
 
     let mouseX = null;
     let mouseY = null;
     let raf = null;
-    const radius = 90;
+    const radius = 100;
 
     function update() {
       letters.forEach((span) => {
@@ -155,9 +158,11 @@ function initMagneticHeadline() {
         const dist = Math.hypot(mouseX - cx, mouseY - cy);
         if (dist < radius) {
           const strength = 1 - dist / radius;
-          span.style.transform = `translateY(${-strength * 7}px) scale(${1 + strength * 0.18})`;
+          span.style.color = "#fff6e6";
+          span.style.textShadow = `0 0 ${6 + strength * 26}px rgba(216, 168, 78, ${0.5 + strength * 0.75})`;
         } else {
-          span.style.transform = "";
+          span.style.color = "";
+          span.style.textShadow = "";
         }
       });
       raf = null;
@@ -169,7 +174,10 @@ function initMagneticHeadline() {
       if (!raf) raf = requestAnimationFrame(update);
     });
     hero.addEventListener("mouseleave", () => {
-      letters.forEach((span) => (span.style.transform = ""));
+      letters.forEach((span) => {
+        span.style.color = "";
+        span.style.textShadow = "";
+      });
     });
   });
 }
@@ -294,6 +302,59 @@ function initReveal() {
   items.forEach((el) => observer.observe(el));
 }
 
+/* ---------- Legacy tree: draws in once, then nodes glow softly ----------
+   A cinematic one-time ink-drawing reveal (not a looping animation) —
+   the trunk and branches draw in with a staggered delay, then each
+   node fades in and settles into a slow ambient pulse. */
+function initLegacyTree() {
+  const svg = document.querySelector(".legacy-tree");
+  if (!svg) return;
+  const paths = Array.from(svg.querySelectorAll("path"));
+  const circles = Array.from(svg.querySelectorAll("circle"));
+
+  paths.forEach((path) => {
+    const len = path.getTotalLength();
+    path.style.strokeDasharray = `${len}`;
+    path.style.strokeDashoffset = `${len}`;
+    path.style.transition = "stroke-dashoffset 1.5s cubic-bezier(0.22, 1, 0.36, 1)";
+  });
+  circles.forEach((c) => {
+    c.style.transition = "opacity 700ms ease";
+  });
+
+  if (PREFERS_REDUCED_MOTION) {
+    paths.forEach((p) => (p.style.strokeDashoffset = "0"));
+    circles.forEach((c) => {
+      c.style.opacity = "1";
+      c.classList.add("lit");
+    });
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        paths.forEach((path, i) => {
+          setTimeout(() => {
+            path.style.strokeDashoffset = "0";
+          }, i * 200);
+        });
+        const branchTime = paths.length * 200 + 1500;
+        circles.forEach((c, i) => {
+          setTimeout(() => {
+            c.style.opacity = "1";
+            c.classList.add("lit");
+          }, branchTime + i * 130);
+        });
+        observer.disconnect();
+      });
+    },
+    { threshold: 0.3 }
+  );
+  observer.observe(svg);
+}
+
 /* ---------- Init ---------- */
 document.addEventListener("DOMContentLoaded", async () => {
   applyTextures();
@@ -304,4 +365,5 @@ document.addEventListener("DOMContentLoaded", async () => {
   initFaqAccordion();
   initPageLoader();
   initReveal();
+  initLegacyTree();
 });
