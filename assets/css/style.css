@@ -530,6 +530,38 @@ section.on-navy { background: var(--navy); }
    fading out at both ends and faded under the text column so it reads
    as atmosphere, not clutter. */
 .legacy-section { position: relative; background: var(--paper); }
+
+/* Generic "baked into the section's own background" entry fade.
+   Unlike a .seam div sitting between two sections, this lives on the
+   section itself, so real content (headings, photos) sits on top of it
+   via normal local stacking instead of competing with it on z-index.
+   Set --from / --to inline per section; always routes through
+   --bronze-pale so the transition reads as a warm dissolve rather than
+   a flat gray flash when --from/--to are far apart in lightness. */
+.fade-in-top, section.fade-in-top {
+  background: linear-gradient(
+    to bottom,
+    var(--from) 0,
+    color-mix(in srgb, var(--from) 85%, var(--bronze-pale) 15%) 90px,
+    color-mix(in srgb, var(--from) 40%, var(--bronze-pale) 60%) 210px,
+    color-mix(in srgb, var(--bronze-pale) 55%, var(--to) 45%) 330px,
+    color-mix(in srgb, var(--bronze-pale) 12%, var(--to) 88%) 430px,
+    var(--to) 500px
+  );
+}
+/* Plain variant for low-contrast transitions (dark-to-dark, light-to-light)
+   where routing through the light --bronze-pale bridge would itself look
+   like an unwanted glow, rather than helping the blend. */
+.fade-in-top.fade-plain, section.fade-in-top.fade-plain {
+  background: linear-gradient(
+    to bottom,
+    var(--from) 0,
+    color-mix(in srgb, var(--from) 88%, var(--to) 12%) 80px,
+    color-mix(in srgb, var(--from) 50%, var(--to) 50%) 220px,
+    color-mix(in srgb, var(--from) 12%, var(--to) 88%) 360px,
+    var(--to) 460px
+  );
+}
 .legacy-grid {
   display: grid;
   grid-template-columns: 1fr 0.9fr;
@@ -572,21 +604,26 @@ section.on-navy { background: var(--navy); }
 
 .legacy-belt-zone {
   position: absolute;
-  inset: 0;
+  top: 0;
+  bottom: 0;
+  left: 48%;
+  right: 0;
   z-index: 0;
   overflow: hidden;
   pointer-events: none;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 26%);
+  mask-image: linear-gradient(to right, transparent 0%, black 26%);
 }
 .legacy-belt {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 160%;
+  width: 220%;
   height: 540px;
   transform: translate(-50%, -50%) rotate(-9deg);
   overflow: hidden;
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 30%, black 70%, transparent 100%);
-  mask-image: linear-gradient(to right, transparent 0%, black 30%, black 70%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 22%, black 78%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 22%, black 78%, transparent 100%);
 }
 .legacy-belt-track {
   display: flex;
@@ -610,13 +647,6 @@ section.on-navy { background: var(--navy); }
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
 }
-.legacy-belt-fade {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: linear-gradient(to right, var(--paper) 0%, var(--paper) 34%, rgba(248, 245, 236, 0.55) 50%, rgba(248, 245, 236, 0) 68%);
-}
-
 .legacy-quote {
   position: relative;
   z-index: 5;
@@ -645,7 +675,6 @@ section.on-navy { background: var(--navy); }
   .legacy-belt-zone { position: relative; height: 220px; margin-top: 32px; }
   .legacy-belt { height: 200px; width: 160%; }
   .legacy-quote { margin: 48px auto -56px; padding: 32px 24px; }
-  .legacy-belt-fade { background: linear-gradient(to bottom, var(--paper) 0%, rgba(248, 245, 236, 0) 30%, rgba(248, 245, 236, 0) 70%, var(--paper) 100%); }
 }
 
 /* ---------- Process steps ---------- */
@@ -858,6 +887,17 @@ section.on-navy { background: var(--navy); }
   );
 }
 .seam.seam-soft { height: 100px; margin: -22px 0; }
+.seam.seam-warm {
+  background: linear-gradient(
+    to bottom,
+    var(--from) 0%,
+    color-mix(in srgb, var(--from) 92%, var(--bronze-pale) 8%) 15%,
+    color-mix(in srgb, var(--from) 60%, var(--bronze-pale) 40%) 35%,
+    color-mix(in srgb, var(--bronze-pale) 55%, var(--to) 45%) 55%,
+    color-mix(in srgb, var(--bronze-pale) 15%, var(--to) 85%) 78%,
+    var(--to) 100%
+  );
+}
 .seam:has(+ .section-with-photo) { margin-bottom: 0; }
 .section-with-photo + .seam { margin-top: 0; }
 @media (max-width: 640px) {
