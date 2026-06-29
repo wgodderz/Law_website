@@ -116,70 +116,97 @@ function initCursorGlow() {
   });
 }
 
-/* ---------- Headline letters warm slightly near the cursor ----------
-   Letters are grouped into per-word wrappers (white-space: nowrap) so
-   line breaks can only happen between words, never inside one. Letters
-   near the cursor gain a soft bronze glow — no movement or scaling. */
+/* ---------- Letters warm with a bronze glow near the cursor ----------
+   Shared by the hero headline and the header wordmark. Letters are
+   grouped into per-word wrappers (white-space: nowrap) so line breaks
+   can only happen between words, never inside one. */
+function buildGlowLetters(container, text) {
+  const words = text.split(" ");
+  const letters = [];
+  words.forEach((word, wi) => {
+    const wordSpan = document.createElement("span");
+    wordSpan.style.display = "inline-block";
+    wordSpan.style.whiteSpace = "nowrap";
+    Array.from(word).forEach((ch) => {
+      const span = document.createElement("span");
+      span.textContent = ch;
+      span.style.display = "inline-block";
+      span.style.transition = "color 320ms ease, text-shadow 320ms ease";
+      wordSpan.appendChild(span);
+      letters.push(span);
+    });
+    container.appendChild(wordSpan);
+    if (wi < words.length - 1) container.appendChild(document.createTextNode(" "));
+  });
+  return letters;
+}
+
+function attachGlowTracking(hoverTarget, letters, radius) {
+  let mouseX = null;
+  let mouseY = null;
+  let raf = null;
+
+  function update() {
+    letters.forEach((span) => {
+      const rect = span.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const dist = Math.hypot(mouseX - cx, mouseY - cy);
+      if (dist < radius) {
+        const strength = 1 - dist / radius;
+        span.style.color = "#fff6e6";
+        span.style.textShadow = `0 0 ${6 + strength * 26}px rgba(216, 168, 78, ${0.5 + strength * 0.75})`;
+      } else {
+        span.style.color = "";
+        span.style.textShadow = "";
+      }
+    });
+    raf = null;
+  }
+
+  hoverTarget.addEventListener("mousemove", (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    if (!raf) raf = requestAnimationFrame(update);
+  });
+  hoverTarget.addEventListener("mouseleave", () => {
+    letters.forEach((span) => {
+      span.style.color = "";
+      span.style.textShadow = "";
+    });
+  });
+}
+
 function initMagneticHeadline() {
   if (PREFERS_REDUCED_MOTION) return;
   document.querySelectorAll(".hero h1").forEach((h1) => {
     const hero = h1.closest(".hero");
     if (!hero) return;
-
-    const words = h1.textContent.split(" ");
-    const letters = [];
+    const text = h1.textContent;
     h1.innerHTML = "";
-    words.forEach((word, wi) => {
-      const wordSpan = document.createElement("span");
-      wordSpan.style.display = "inline-block";
-      wordSpan.style.whiteSpace = "nowrap";
-      Array.from(word).forEach((ch) => {
-        const span = document.createElement("span");
-        span.textContent = ch;
-        span.style.display = "inline-block";
-        span.style.transition = "color 320ms ease, text-shadow 320ms ease";
-        wordSpan.appendChild(span);
-        letters.push(span);
-      });
-      h1.appendChild(wordSpan);
-      if (wi < words.length - 1) h1.appendChild(document.createTextNode(" "));
-    });
-
-    let mouseX = null;
-    let mouseY = null;
-    let raf = null;
-    const radius = 100;
-
-    function update() {
-      letters.forEach((span) => {
-        const rect = span.getBoundingClientRect();
-        const cx = rect.left + rect.width / 2;
-        const cy = rect.top + rect.height / 2;
-        const dist = Math.hypot(mouseX - cx, mouseY - cy);
-        if (dist < radius) {
-          const strength = 1 - dist / radius;
-          span.style.color = "#fff6e6";
-          span.style.textShadow = `0 0 ${6 + strength * 26}px rgba(216, 168, 78, ${0.5 + strength * 0.75})`;
-        } else {
-          span.style.color = "";
-          span.style.textShadow = "";
-        }
-      });
-      raf = null;
-    }
-
-    hero.addEventListener("mousemove", (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      if (!raf) raf = requestAnimationFrame(update);
-    });
-    hero.addEventListener("mouseleave", () => {
-      letters.forEach((span) => {
-        span.style.color = "";
-        span.style.textShadow = "";
-      });
-    });
+    const letters = buildGlowLetters(h1, text);
+    attachGlowTracking(hero, letters, 100);
   });
+}
+
+/* Header wordmark ("Paradigm Law Group") gets the same glow, scaled
+   down for its smaller size. Runs after partials inject since the
+   header markup doesn't exist until then. */
+function initWordmarkGlow() {
+  if (PREFERS_REDUCED_MOTION) return;
+  const textEl = document.querySelector(".wordmark .text");
+  if (!textEl) return;
+  const small = textEl.querySelector("small");
+  const labelNode = Array.from(textEl.childNodes).find((n) => n.nodeType === Node.TEXT_NODE && n.textContent.trim());
+  const label = labelNode ? labelNode.textContent.trim() : "";
+  if (!label) return;
+
+  textEl.innerHTML = "";
+  const letters = buildGlowLetters(textEl, label);
+  if (small) textEl.appendChild(small);
+
+  const wordmark = textEl.closest(".wordmark");
+  attachGlowTracking(wordmark, letters, 46);
 }
 
 /* ---------- Header / footer partial injection ---------- */
@@ -355,6 +382,62 @@ function initLegacyTree() {
   observer.observe(svg);
 }
 
+/* ---------- Service cards: cursor glow + icon ink-draw-in ---------- */
+function initServiceCards() {
+  const cards = document.querySelectorAll(".grid-3 .card");
+  if (!cards.length) return;
+
+  const shapeSelector = "path, circle, rect, line, polyline, polygon";
+
+  cards.forEach((card) => {
+    if (!PREFERS_REDUCED_MOTION) {
+      const glow = document.createElement("div");
+      glow.className = "card-glow";
+      card.appendChild(glow);
+      card.addEventListener("mousemove", (e) => {
+        const rect = card.getBoundingClientRect();
+        glow.style.transform = `translate(${e.clientX - rect.left}px, ${e.clientY - rect.top}px) translate(-50%, -50%)`;
+        glow.style.opacity = "1";
+      });
+      card.addEventListener("mouseleave", () => {
+        glow.style.opacity = "0";
+      });
+    }
+
+    const icon = card.querySelector(".card-icon svg");
+    if (!icon) return;
+    const shapes = Array.from(icon.querySelectorAll(shapeSelector));
+    shapes.forEach((shape) => {
+      const len = shape.getTotalLength ? shape.getTotalLength() : 40;
+      shape.style.strokeDasharray = `${len}`;
+      shape.style.strokeDashoffset = `${len}`;
+      shape.style.transition = "stroke-dashoffset 900ms cubic-bezier(0.22, 1, 0.36, 1)";
+    });
+    if (PREFERS_REDUCED_MOTION) {
+      shapes.forEach((s) => (s.style.strokeDashoffset = "0"));
+    }
+  });
+
+  if (PREFERS_REDUCED_MOTION) return;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const icon = entry.target.querySelector(".card-icon svg");
+        if (icon) {
+          icon.querySelectorAll(shapeSelector).forEach((shape) => {
+            shape.style.strokeDashoffset = "0";
+          });
+        }
+        observer.unobserve(entry.target);
+      });
+    },
+    { threshold: 0.3 }
+  );
+  cards.forEach((card) => observer.observe(card));
+}
+
 /* ---------- Init ---------- */
 document.addEventListener("DOMContentLoaded", async () => {
   applyTextures();
@@ -362,8 +445,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   initCursorGlow();
   initMagneticHeadline();
   await injectPartials();
+  initWordmarkGlow();
   initFaqAccordion();
   initPageLoader();
   initReveal();
   initLegacyTree();
+  initServiceCards();
 });
