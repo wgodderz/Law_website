@@ -438,6 +438,103 @@ function initServiceCards() {
   cards.forEach((card) => observer.observe(card));
 }
 
+/* ---------- Hero photo depth: subtle scroll parallax ----------
+   The photo drifts a few px slower than the page scroll, reading as
+   depth-of-field rather than a flat pasted-on image. Only runs while
+   a given hero is near the viewport, for cheap idle cost on long pages. */
+function initHeroParallax() {
+  if (PREFERS_REDUCED_MOTION) return;
+  const heroes = Array.from(document.querySelectorAll(".hero"))
+    .map((hero) => ({ hero, photo: hero.querySelector(".hero-photo") }))
+    .filter((h) => h.photo);
+  if (!heroes.length) return;
+
+  let ticking = false;
+  function update() {
+    heroes.forEach(({ hero, photo }) => {
+      const rect = hero.getBoundingClientRect();
+      if (rect.bottom < 0 || rect.top > window.innerHeight) return;
+      const shift = rect.top * -0.12;
+      photo.style.transform = `translateY(${shift}px) scale(1.12)`;
+    });
+    ticking = false;
+  }
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    },
+    { passive: true }
+  );
+  update();
+}
+
+/* ---------- Credential stats count up on scroll-in ----------
+   Parses a leading/trailing non-digit prefix+suffix (e.g. "$", "B+", "+")
+   off each .stat-num so "20+" counts 0→20 and lands back on the exact
+   original string, never on a rounding artifact. */
+function initStatCountUp() {
+  const nums = document.querySelectorAll(".stat-num");
+  if (!nums.length || PREFERS_REDUCED_MOTION) return;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        observer.unobserve(el);
+        const raw = el.textContent.trim();
+        const match = raw.match(/^([^\d]*)(\d+)(.*)$/);
+        if (!match) return;
+        const [, prefix, numStr, suffix] = match;
+        const target = parseInt(numStr, 10);
+        const duration = 1100;
+        const start = performance.now();
+        function frame(now) {
+          const t = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - t, 3);
+          el.textContent = `${prefix}${Math.round(target * eased)}${suffix}`;
+          if (t < 1) requestAnimationFrame(frame);
+          else el.textContent = raw;
+        }
+        requestAnimationFrame(frame);
+      });
+    },
+    { threshold: 0.5 }
+  );
+  nums.forEach((el) => observer.observe(el));
+}
+
+/* ---------- Article reading progress ----------
+   A thin bronze fill across the top of the viewport tracking position
+   through the article body specifically (not the whole page, so it
+   reaches 100% as the prose ends rather than at the footer). */
+function initReadingProgress() {
+  if (document.body.getAttribute("data-page") !== "articles") return;
+  const prose = document.querySelector(".prose");
+  if (!prose) return;
+
+  const bar = document.createElement("div");
+  bar.className = "reading-progress";
+  const fill = document.createElement("div");
+  fill.className = "reading-progress-fill";
+  bar.appendChild(fill);
+  document.body.appendChild(bar);
+
+  function update() {
+    const rect = prose.getBoundingClientRect();
+    const total = rect.height - window.innerHeight * 0.5;
+    const scrolled = -rect.top;
+    const pct = total > 0 ? Math.min(Math.max(scrolled / total, 0), 1) : 0;
+    fill.style.transform = `scaleX(${pct})`;
+  }
+  window.addEventListener("scroll", () => requestAnimationFrame(update), { passive: true });
+  update();
+}
+
 /* ---------- Init ---------- */
 document.addEventListener("DOMContentLoaded", async () => {
   applyTextures();
@@ -451,4 +548,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   initReveal();
   initLegacyTree();
   initServiceCards();
+  initHeroParallax();
+  initStatCountUp();
+  initReadingProgress();
 });

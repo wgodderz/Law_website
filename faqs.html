@@ -15,17 +15,28 @@
 
 <div class="site-header" data-include="header"></div>
 
-<header class="hero" style="padding: 90px 0 60px;">
-  <div class="hero-gradient"></div>
+<header class="hero" style="padding: 120px 0 80px;">
+  <div class="hero-photo" style="background-image: url('brand_assets/kuimages2.png');"></div>
+  <div class="hero-tint"></div>
+  <div class="hero-gradient has-photo"></div>
+  <div class="hero-fade"></div>
   <div class="wrap hero-content on-navy" style="text-align:center; max-width:680px; margin:0 auto;">
     <span class="eyebrow" style="justify-content:center;">FAQs</span>
     <h1 style="font-size: clamp(2.2rem, 4.5vw, 3.2rem); margin-top: 18px;">Frequently Asked Questions</h1>
-    <p class="muted" style="font-size: 1.1rem;">Clear answers to the questions families ask most often about estate planning.</p>
+    <p class="muted" style="font-size: 1.1rem; margin-top: 14px;">Clear answers to the questions families ask most often about estate planning.</p>
   </div>
 </header>
 
-<section class="section">
-  <div class="wrap" style="max-width: 800px;">
+<section class="section fade-in-top" style="--from: var(--ink); --to: var(--paper); padding-top: 0;">
+  <div class="wrap" style="max-width: 820px;">
+
+    <!-- Bridge: light text in dark gradient zone -->
+    <div class="reveal" style="text-align:center; padding: 80px 0 160px; max-width: 560px; margin: 0 auto;">
+      <p style="font-family:var(--font-display); font-size:clamp(1.15rem,2vw,1.55rem); color:var(--paper); font-style:italic; font-weight:400; letter-spacing:-0.01em; line-height:1.5; margin:0;">Plain-English answers to the most common questions families ask about estate planning.</p>
+    </div>
+
+    <!-- Category: Understanding Estate Planning -->
+    <div class="faq-category-head"><h3>Understanding Estate Planning</h3></div>
 
     <div class="faq-item reveal">
       <button class="faq-q" aria-expanded="false">What is Estate Planning?<span class="plus"></span></button>
@@ -34,6 +45,35 @@
         <p>Estate planning is not only about transferring assets after death. It also includes planning for incapacity, healthcare decisions, guardianship of minor children, and protecting family members and beneficiaries.</p>
       </div></div>
     </div>
+
+    <div class="faq-item reveal">
+      <button class="faq-q" aria-expanded="false">What does Intestacy mean?<span class="plus"></span></button>
+      <div class="faq-a"><div class="faq-a-inner">
+        <p>Intestacy means a person dies without a valid will or estate plan. When that happens, state law determines who inherits the person&rsquo;s assets.</p>
+        <p>These default rules may not reflect what the individual actually wanted. Intestacy can also create delays, additional costs, and family disputes.</p>
+        <p>A properly prepared estate plan allows you &mdash; not the state &mdash; to decide how your assets should be distributed.</p>
+      </div></div>
+    </div>
+
+    <div class="faq-item reveal">
+      <button class="faq-q" aria-expanded="false">Do only wealthy people need an estate plan?<span class="plus"></span></button>
+      <div class="faq-a"><div class="faq-a-inner">
+        <p>No. Estate planning is important for almost everyone. Even people without significant wealth often need healthcare decision documents, powers of attorney, guardianship planning for children, probate planning, and asset distribution instructions.</p>
+        <p>Estate planning is fundamentally about protecting your family, preserving your wishes, and reducing stress during difficult times.</p>
+      </div></div>
+    </div>
+
+    <div class="faq-item reveal">
+      <button class="faq-q" aria-expanded="false">Why can&rsquo;t I just use an online form to create my estate plan?<span class="plus"></span></button>
+      <div class="faq-a"><div class="faq-a-inner">
+        <p>Online forms and generic document services may appear convenient, but estate planning is rarely a one-size-fits-all process. Effectiveness depends not only on the documents themselves, but on how they are customized, coordinated, executed, and integrated with your assets and family circumstances.</p>
+        <p>Many online forms don&rsquo;t account for state-specific legal requirements, blended family situations, minor children, business ownership, tax considerations, asset protection, beneficiary planning, incapacity planning, or trust funding and asset coordination.</p>
+        <p>In many cases, the most important value of working with an estate planning attorney is not simply preparing documents &mdash; it is receiving legal guidance tailored to your specific goals and circumstances.</p>
+      </div></div>
+    </div>
+
+    <!-- Category: Probate & Asset Ownership -->
+    <div class="faq-category-head"><h3>Probate &amp; Asset Ownership</h3></div>
 
     <div class="faq-item reveal">
       <button class="faq-q" aria-expanded="false">What is Probate?<span class="plus"></span></button>
@@ -56,14 +96,8 @@
       </div></div>
     </div>
 
-    <div class="faq-item reveal">
-      <button class="faq-q" aria-expanded="false">What does Intestacy mean?<span class="plus"></span></button>
-      <div class="faq-a"><div class="faq-a-inner">
-        <p>Intestacy means a person dies without a valid will or estate plan. When that happens, state law determines who inherits the person&rsquo;s assets.</p>
-        <p>These default rules may not reflect what the individual actually wanted. Intestacy can also create delays, additional costs, and family disputes.</p>
-        <p>A properly prepared estate plan allows you &mdash; not the state &mdash; to decide how your assets should be distributed.</p>
-      </div></div>
-    </div>
+    <!-- Category: Wills & Trusts -->
+    <div class="faq-category-head"><h3>Wills &amp; Trusts</h3></div>
 
     <div class="faq-item reveal">
       <button class="faq-q" aria-expanded="false">What is a Will?<span class="plus"></span></button>
@@ -142,6 +176,9 @@
       </div></div>
     </div>
 
+    <!-- Category: Planning for Incapacity -->
+    <div class="faq-category-head"><h3>Planning for Incapacity</h3></div>
+
     <div class="faq-item reveal">
       <button class="faq-q" aria-expanded="false">What is a Power of Attorney? What does a Durable Power of Attorney mean?<span class="plus"></span></button>
       <div class="faq-a"><div class="faq-a-inner">
@@ -167,6 +204,17 @@
     </div>
 
     <div class="faq-item reveal">
+      <button class="faq-q" aria-expanded="false">What happens if I become incapacitated but do not die?<span class="plus"></span></button>
+      <div class="faq-a"><div class="faq-a-inner">
+        <p>If you become incapacitated without proper planning documents in place, your loved ones may need to go to court to obtain authority to manage your financial or medical affairs. This process can be expensive, time-consuming, and emotionally difficult.</p>
+        <p>A properly prepared estate plan can help ensure that trusted individuals are able to step in and manage affairs smoothly if incapacity occurs.</p>
+      </div></div>
+    </div>
+
+    <!-- Category: Building & Protecting Your Plan -->
+    <div class="faq-category-head"><h3>Building &amp; Protecting Your Plan</h3></div>
+
+    <div class="faq-item reveal">
       <button class="faq-q" aria-expanded="false">What should a person have in place for their estate plan?<span class="plus"></span></button>
       <div class="faq-a"><div class="faq-a-inner">
         <p>Every person&rsquo;s situation is different, but a comprehensive estate plan commonly includes:</p>
@@ -180,23 +228,6 @@
           <li>Guardianship provisions for minor children</li>
         </ul>
         <p>Estate plans should also be reviewed periodically to account for changes in family circumstances, finances, or the law.</p>
-      </div></div>
-    </div>
-
-    <div class="faq-item reveal">
-      <button class="faq-q" aria-expanded="false">Do only wealthy people need an estate plan?<span class="plus"></span></button>
-      <div class="faq-a"><div class="faq-a-inner">
-        <p>No. Estate planning is important for almost everyone. Even people without significant wealth often need healthcare decision documents, powers of attorney, guardianship planning for children, probate planning, and asset distribution instructions.</p>
-        <p>Estate planning is fundamentally about protecting your family, preserving your wishes, and reducing stress during difficult times.</p>
-      </div></div>
-    </div>
-
-    <div class="faq-item reveal">
-      <button class="faq-q" aria-expanded="false">Why can&rsquo;t I just use an online form to create my estate plan?<span class="plus"></span></button>
-      <div class="faq-a"><div class="faq-a-inner">
-        <p>Online forms and generic document services may appear convenient, but estate planning is rarely a one-size-fits-all process. Effectiveness depends not only on the documents themselves, but on how they are customized, coordinated, executed, and integrated with your assets and family circumstances.</p>
-        <p>Many online forms don&rsquo;t account for state-specific legal requirements, blended family situations, minor children, business ownership, tax considerations, asset protection, beneficiary planning, incapacity planning, or trust funding and asset coordination.</p>
-        <p>In many cases, the most important value of working with an estate planning attorney is not simply preparing documents &mdash; it is receiving legal guidance tailored to your specific goals and circumstances.</p>
       </div></div>
     </div>
 
@@ -233,14 +264,6 @@
     </div>
 
     <div class="faq-item reveal">
-      <button class="faq-q" aria-expanded="false">What happens if I become incapacitated but do not die?<span class="plus"></span></button>
-      <div class="faq-a"><div class="faq-a-inner">
-        <p>If you become incapacitated without proper planning documents in place, your loved ones may need to go to court to obtain authority to manage your financial or medical affairs. This process can be expensive, time-consuming, and emotionally difficult.</p>
-        <p>A properly prepared estate plan can help ensure that trusted individuals are able to step in and manage affairs smoothly if incapacity occurs.</p>
-      </div></div>
-    </div>
-
-    <div class="faq-item reveal">
       <button class="faq-q" aria-expanded="false">What can I do if I change my mind after creating my estate plan?<span class="plus"></span></button>
       <div class="faq-a"><div class="faq-a-inner">
         <p>Estate plans are not meant to be &ldquo;one and done&rdquo; documents. As long as you have legal capacity, most estate planning documents can be modified or replaced, including signing an amendment, restating or replacing a trust, updating a will, changing beneficiary designations, revising powers of attorney or healthcare directives, and updating fiduciary appointments.</p>
@@ -249,14 +272,27 @@
       </div></div>
     </div>
 
-    <div style="text-align:center; margin-top: 64px;">
+    <div style="text-align:center; margin-top: 64px;" class="reveal">
       <p class="muted">Still have questions?</p>
-      <a class="btn btn-bronze" data-href="schedule.html" href="#">Schedule a Consultation</a>
+      <a class="btn btn-bronze" data-href="schedule.html" href="#" style="margin-top: 12px; display:inline-flex;">Schedule a Consultation</a>
     </div>
   </div>
 </section>
 
-<div class="site-footer" data-include="footer"></div>
+<!-- CTA -->
+<section class="section on-navy section-with-photo fade-in-top" style="text-align:center; padding: 120px 0; --from: var(--paper); --to: var(--navy);">
+  <div class="section-photo-layer">
+    <div class="section-photo" style="background-image: url('brand_assets/kc_skyline.png');"></div>
+    <div class="section-photo-tint"></div>
+  </div>
+  <div class="wrap" style="max-width: 600px; position:relative; z-index:1;">
+    <h2 class="glow-heading on-navy heading-gold" style="font-size: 2rem; margin-bottom: 20px;">Your family deserves a real plan</h2>
+    <p class="muted" style="font-size: 1.05rem; margin-bottom: 36px;">Let&rsquo;s talk through your situation and find the right approach for your family.</p>
+    <a class="btn btn-bronze" data-href="schedule.html" href="#">Schedule a Consultation</a>
+  </div>
+</section>
+
+<div class="site-footer fade-in-top fade-plain" data-include="footer" style="--from: var(--navy); --to: var(--ink);"></div>
 
 <div id="page-loader" data-loader-text="Just a moment">
   <div class="loader-wrapper">
